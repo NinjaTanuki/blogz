@@ -1,5 +1,7 @@
 from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import desc
+
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -12,7 +14,7 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
-    body = db.Column(db.Text)
+    body = db.Column(db.String(250))
 
     def __init__(self, title,body):
         self.title = title
@@ -20,9 +22,9 @@ class Post(db.Model):
 
 @app.route('/blog', methods=['POST','GET'])
 def individual_post():
-
-    post_id = request.args.get('post_id')
-    indv_post = Post.query.filter_by(id=post_id).first()
+    
+    post_id = request.args.get('id')
+    indv_post = Post.query.get(post_id)
     return render_template('blog.html', indv_post=indv_post)
 
 
@@ -40,14 +42,14 @@ def add_post():
         
         if len(post_title) < 1 or len(post_body) < 1:
             error = "feild is empty"
-            return render_template('AddPost.html', title="Build-A-Blog", error = error) 
+            return render_template('AddPost.html', title="Build-A-Blog", error = error, post_title = post_title, post_body = post_body) 
 
         new_post = Post(post_title,post_body)
         db.session.add(new_post)
         db.session.commit() 
 
 
-        return redirect('/')
+        return redirect('/blog?id=%s' % new_post.id)
 
         
     return render_template('AddPost.html', title="Build-A-Blog")
