@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Build-A-Blog</h1>
+    {% if user_posts|length == 0 %}
+    <p>No Post yet</p>
+    {% else %}
+
+        {% for user_posts in user_posts %}
+        <a href="/blog?id={{user_posts.id}}"><h2>{{user_posts.title}}</h2></a>
+        <p>{{user_posts.body}}</p>
+        <p>written by<a href="/blog?user={{user_posts.owner.username}}">{{user_posts.owner.username}}</a></p>
+        {% endfor %}
+
+
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Register</h1>
+<form  method='post'>
+
+    
+    <lable for="username">Username
+    <input name="username" type="text" value="{{username}}"/>
+    {% if error or error %}
+    <p class="error">{{error2}}</p>
+    {%endif%}
+    </lable>    
+    <lable for="password">Password
+    <input name="password" type="password" value=""/>
+    {% if error or error3 %}
+    <p class="error">{{error3}}</p>
+    {%endif%}
+    </lable>
+    <lable for="verify">Verify Password
+    <input name="verify" type="password" value=""/>
+    {% if error4 %}
+    <p class="error">{{error4}}</p>
+    {%endif%}
+    </lable>
+    <input type="submit"/>           
+    
+</form>
+{% endblock %}

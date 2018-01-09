@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Blog Users!</h1>
+    {% with messages = get_flashed_messages()%}
+        {% for message in messages %}
+            <p>{{message}}</p>
+        {% endfor %}
+    {% endwith %}
+    {% if users|length == 0 %}
+    <p>No Post yet</p>
+    {% else %}
+    <ul>
+        {% for users in users %}
+        <li><a href="/blog?user={{users.username}}"><h3>{{users.username}}</h3></a></li>
+        {% endfor %}
+    </ul>
+
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>login</h1>
+    {% with messages = get_flashed_messages(with_categories=True)%}
+        {% for category,message in messages %}
+            <p class="error">{{message}}</p>
+        {% endfor %}
+    {% endwith %}
+<form action='/login' method='post'>
+
+    <table>
+        <lable for="username">Username</lable>
+        <input name="username" type="text" value="{{username}}">
+      
+        <lable for="password">Password</lable>
+        <input name="password" type="password" value="">
+      
+        <input type="submit" value='Login'/>       
+    </table>
+
+    <p>Dont have an Account?<a href='/signup'>Create One!</a></p>
+</form>
+{% endblock %}
