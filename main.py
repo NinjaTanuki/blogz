@@ -37,15 +37,15 @@ class Post(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', 'index']
+    allowed_routes = ['login', 'signup', 'index', 'blog']
     if request.endpoint not in allowed_routes and 'username' not in session:
-        return redirect(url_for('index'))
+        return redirect('/login')
 
 @app.route('/logout')
 def logout():
     del session['username']
     flash ('Logged Out!')
-    return redirect('/')
+    return redirect('/blog')
 
 @app.route('/login', methods=['Post','GET'])
 def login():
@@ -63,7 +63,7 @@ def login():
             
                 session['username'] = username
                 flash('Logged in!')
-                return redirect('/')
+                return redirect('/AddPost')
             else: 
 
                 flash ('Invalid Password', 'error')    
@@ -83,7 +83,7 @@ def signup():
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
-        error =""
+ 
         error2 = ""
         error3 = ""
         error4 = ""
@@ -93,21 +93,18 @@ def signup():
             
         existing_user = User.query.filter_by(username=username).first()
         
-        if len(username) < 1 or len(password) < 1:
-            error = "field is empty"
-        
         if len(username) < 3:
-            error2 = "invalid username"
+            error2 = "Invalid username"
             
         if len(password) < 3:
-            error3 = "invalid password"
+            error3 = "Invalid password"
             
-        if password != verify:
-            error4 = "passwords do not match"  
+        if password != verify or len(verify) < 1:
+            error4 = "Passwords do not match"  
 
-        if error or error2 or error3 or error4: 
+        if error2 or error3 or error4: 
 
-            return render_template('register.html', username = username, error = error, error2 = error2, error3 = error3, error4 = error4)   
+            return render_template('register.html', username = username, error2 = error2, error3 = error3, error4 = error4)   
         
         if not existing_user:
             new_user = User(username, password)
@@ -115,7 +112,7 @@ def signup():
             db.session.commit()
             session['username'] = username
 
-            return redirect('/')
+            return redirect('/AddPost')
 
         else:
             flash ('User already exist')
