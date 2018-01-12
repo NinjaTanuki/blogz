@@ -37,7 +37,7 @@ class Post(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', 'index', 'blog']
+    allowed_routes = ['login', 'signup', 'index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -62,7 +62,7 @@ def login():
             if user.password == password:
             
                 session['username'] = username
-                flash('Logged in!')
+                flash('Logged in!', 'confirm')
                 return redirect('/AddPost')
             else: 
 

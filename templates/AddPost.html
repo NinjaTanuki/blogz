@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 style="display:inline-block">Build a Blog</h1>
-{% with messages = get_flashed_messages()%}
-    {% for message in messages %}
-        <p>{{message}}</p>
-    {% endfor %}
+<h1 style="display:inline-block">Add Post</h1>
+{% with messages = get_flashed_messages(with_categories=True)%}
+{% for category,message in messages %}
+    <p class="confirm">{{message}}</p>
+{% endfor %}
 {% endwith %}
 <form method='post'>
         <label>
